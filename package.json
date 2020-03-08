@@ -1,0 +1,13 @@
+{
+  "name": "midi-pi",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "easymidi": "^1.0.3",
+    "midi-file": "^1.1.2"
+  }
+}
