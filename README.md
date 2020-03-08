@@ -22,6 +22,7 @@ Easy-to-use midi master device build with Raspberry pi
 ## Todo
 
 - [x] read midi file
+- [ ] implement timeline event loop to playing midi
 - [ ] output midi command to midi device
 - [ ] listen key event
 - [ ] make gui and communicate via socket.io
