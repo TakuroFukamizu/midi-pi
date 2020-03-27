@@ -29,7 +29,18 @@ export default class VerticalTimeline extends Vue {
         height: 0,
     };
 
-    protected colors = GradientColor(['#E5404C', '#FD743C', '#FD9C3C'], 128);
+    protected colors = GradientColor(
+        [
+            '#DE6641',
+            '#E8AC51',
+            '#F2E55C',
+            '#39A869',
+            '#4784BF',
+            '#5D5099',
+            '#A55B9A',
+        ],
+        128,
+    );
 
     protected currentTime = 0;
     protected get center(): {
