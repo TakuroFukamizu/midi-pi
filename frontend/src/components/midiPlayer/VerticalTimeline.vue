@@ -14,7 +14,9 @@ import gsap from 'gsap';
 import GradientColor from 'gradient-color';
 
 import RandomUtil from '@/utils/RandomUtil';
-import ArrayUtil from '../../utils/ArrayUtil';
+import ArrayUtil from '@/utils/ArrayUtil';
+
+import TestData from '@/data/testdata';
 
 @Component({
     directives: {
@@ -45,24 +47,24 @@ export default class VerticalTimeline extends Vue {
     protected notes = [] as Note[];
 
     protected mounted(): void {
-        for (const i of ArrayUtil.range(100)) {
-            this.notes.push({
-                time: i * RandomUtil.rand(2000, 3000),
-                duration: RandomUtil.rand(100, 200),
-                value: RandomUtil.rand(0, 127),
-            });
-        }
+        // for (const i of ArrayUtil.range(100)) {
+        //     this.notes.push({
+        //         time: i * RandomUtil.rand(2000, 3000),
+        //         duration: RandomUtil.rand(100, 200),
+        //         value: RandomUtil.rand(0, 127),
+        //     });
+        // }
 
         const timeline = gsap.timeline();
-        for (const note of this.notes) {
+        for (const note of TestData.channels.timelines) {
             // eslint-disable-next-line @typescript-eslint/no-this-alias
             const self = this;
             const object = {
                 width: 20,
-                height: note.duration,
+                height: note.durationTime / 10,
                 offsetX: 10,
-                offsetY: note.duration,
-                fill: this.colors[RandomUtil.rand(this.colors.length)],
+                offsetY: note.durationTime / 10,
+                fill: this.colors[note.noteNumber],
                 percent: -1,
                 get x(): number {
                     return self.config.width / 2;
@@ -96,7 +98,7 @@ export default class VerticalTimeline extends Vue {
                     percent: 100,
                     ease: 'none',
                 },
-                note.time / 1000 - 5,
+                note.startTime / 1000 - 5,
             );
         }
 
