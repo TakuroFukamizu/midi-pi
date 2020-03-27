@@ -2,6 +2,7 @@ import '@/plugins/registerServiceWorker';
 
 import Vue, { VNode } from 'vue';
 import '@/plugins/quasar';
+import '@/plugins/konva';
 import { quasarApiCustomize } from '@/plugins/quasarApiCustomize';
 import { loggerApiCustomize } from '@/plugins/logger';
 

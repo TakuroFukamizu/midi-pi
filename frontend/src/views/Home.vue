@@ -1,6 +1,13 @@
 <template lang="pug">
-#Home.q-layout-padding
-    .main-pane
+#Home.q-layout-padding.full-height
+    .main-pane.full-height
+        .rows.full-height
+            .col
+            .col
+            .col
+            .col
+            .col
+            .col
 </template>
 
 <script lang="ts">
