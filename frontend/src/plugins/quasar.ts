@@ -22,6 +22,7 @@ import Quasar, {
     AppFullscreen,
     AppVisibility,
 } from 'quasar';
+
 import langJa from 'quasar/lang/ja';
 
 Vue.use(Quasar as any, {

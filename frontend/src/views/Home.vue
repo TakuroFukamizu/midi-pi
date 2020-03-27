@@ -1,20 +1,21 @@
 <template lang="pug">
 #Home.q-layout-padding.full-height
     .main-pane.full-height
-        .rows.full-height
-            .col
-            .col
-            .col
-            .col
-            .col
-            .col
+        .row.full-height
+            .col.full-height(v-for='i in ArrayUtil.range(6)')
+                vertical-timeline.full-height
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import '@/components/midiPlayer/VerticalTimeline.vue';
+
+import ArrayUtil from '@/utils/ArrayUtil';
 
 @Component
-export default class Home extends Vue {}
+export default class Home extends Vue {
+    protected ArrayUtil = ArrayUtil;
+}
 </script>
 
 <style lang="stylus">
