@@ -1,12 +1,10 @@
 <template lang="pug">
 #Home.q-layout-padding
     .main-pane
-        hello-world(msg='HelloWorld')
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import '@/components/HelloWorld.vue';
 
 @Component
 export default class Home extends Vue {}
@@ -21,7 +19,7 @@ html {
 }
 
 #Home .main-pane {
-    main-pane(900px);
+    main-pane();
 }
 </style>
 
