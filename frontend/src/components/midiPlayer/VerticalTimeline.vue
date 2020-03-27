@@ -55,15 +55,26 @@ export default class VerticalTimeline extends Vue {
         //     });
         // }
 
+        const minPerHeight = 5;
         const timeline = gsap.timeline();
-        for (const note of TestData.channels.timelines) {
+        for (const note of TestData.timelines) {
             // eslint-disable-next-line @typescript-eslint/no-this-alias
             const self = this;
             const object = {
                 width: 20,
-                height: note.durationTime / 10,
+                get height(): number {
+                    return (
+                        self.config.height *
+                        (note.durationTime / (minPerHeight * 1000))
+                    );
+                },
                 offsetX: 10,
-                offsetY: note.durationTime / 10,
+                get offsetY(): number {
+                    return (
+                        self.config.height *
+                        (note.durationTime / (minPerHeight * 1000))
+                    );
+                },
                 fill: this.colors[note.noteNumber],
                 percent: -1,
                 get x(): number {
@@ -89,7 +100,7 @@ export default class VerticalTimeline extends Vue {
 
             timeline.fromTo(
                 object,
-                5,
+                minPerHeight,
                 {
                     percent: -1,
                     ease: 'none',
@@ -98,7 +109,7 @@ export default class VerticalTimeline extends Vue {
                     percent: 100,
                     ease: 'none',
                 },
-                note.startTime / 1000 - 5,
+                note.startTime / 1000 - minPerHeight,
             );
         }
 
