@@ -12,7 +12,7 @@ export default class MidiInterfaceDriver {
         this.interface = new easymidi.Output(name);
     }
     output(kind: string, payload: any) { 
-        this.interface.send(kind, payload);
+        this.interface.send(kind.toLowerCase(), payload);
         // output.send('noteon', {
         //   note: 64,
         //   velocity: 127,

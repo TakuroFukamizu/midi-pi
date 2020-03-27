@@ -1,14 +1,13 @@
 import MidiFileReader from './midi/fileReader';
 import MidiInterfaceDriver, { getDevices } from './midi/interfaceDriver';
 
-console.log(getDevices());
+// const input = 'work/imperial.mid';
+// const input = 'work/simple.mid';
+const input = 'work/simple_2multi.mid';
 
-async function main() { 
-    // Read MIDI file into a buffer
-    // var input = fs.readFileSync('work/imperial.mid');
-    // var input = fs.readFileSync('work/simple.mid');
-    const input = 'work/simple_2multi.mid';
-    const interfaceName = 'hoge';
+async function main() {
+    const interfaceName = getDevices()[0];
+    console.info(`use midi interface: ${interfaceName}`);
 
     const device = new MidiInterfaceDriver(interfaceName);
     const file = new MidiFileReader(input);

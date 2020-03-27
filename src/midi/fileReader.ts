@@ -53,20 +53,24 @@ export default class MidiFileReader {
         let currentMicrosecondsPerBeat = this.calcMicrosecondsPerBeat();
         const rows = this.tracks[0];
         for (const row of rows) { 
+            console.log('- ', JSON.stringify(row));
+
             const type = row['type'];
             const deltaTime = row['deltaTime'];
-            const deltaTimeInMs = Math.round((deltaTime * currentMicrosecondsPerBeat) / 1000);
+            const deltaTimeInMs = Math.round((deltaTime * currentMicrosecondsPerBeat) / 1000 / 1000);
+
+            console.log('wait', deltaTimeInMs);
+            await aswait(deltaTimeInMs);
             switch (type) { 
                 case 'noteOn':
                 case 'noteOff':
                     const channel = row['channel'];
                     const noteNumber = row['noteNumber'];
                     const velocity = row['velocity'];
-                    await aswait(deltaTimeInMs);
+                    console.log(type, channel, noteNumber, velocity);
                     yield { type, channel, noteNumber, velocity } as NoteItemInterface;
                     break;
                 case 'setTempo':
-                    await aswait(deltaTimeInMs);
                     currentMicrosecondsPerBeat = row['microsecondsPerBeat'];
                     break;
                 // case 'timeSignature';
