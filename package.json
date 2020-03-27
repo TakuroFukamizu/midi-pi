@@ -1,13 +1,19 @@
 {
   "name": "midi-pi",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "ts-node --files src/index.ts"
   },
   "license": "MIT",
   "dependencies": {
     "easymidi": "^1.0.3",
-    "midi-file": "^1.1.2"
+    "midi-file": "^1.1.2",
+    "ts-node": "^8.8.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.31"
   }
 }
