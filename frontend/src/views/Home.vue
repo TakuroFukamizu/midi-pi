@@ -3,8 +3,8 @@
     q-img.absolute-center.full-height(:src='require("@/assets/imgs/pic/yellow.jpg")')
     .full-height
         .row.full-height
-            .col.full-height(v-for='i in ArrayUtil.range(6)')
-                vertical-timeline.full-height
+            .col.full-height(v-for='channel in channels')
+                vertical-timeline.full-height(:notes='channel')
 </template>
 
 <script lang="ts">
@@ -14,6 +14,8 @@ import '@/components/midiPlayer/VerticalTimeline.vue';
 
 import ArrayUtil from '@/utils/ArrayUtil';
 
+import TestData from '@/data/testdata';
+
 @Component({
     components: {
         QImg,
@@ -22,6 +24,14 @@ import ArrayUtil from '@/utils/ArrayUtil';
 })
 export default class Home extends Vue {
     protected ArrayUtil = ArrayUtil;
+
+    protected channels = [] as any[][];
+
+    protected mounted(): void {
+        for (const i of ArrayUtil.range(6)) {
+            this.channels.push(TestData.timelines.filter(t => t.channel === i));
+        }
+    }
 }
 </script>
 

@@ -5,7 +5,7 @@ k-stage.vertical-timeline(:config='config' v-resize='resized')
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import VueResizeDirective from 'vue-resize-directive';
 
 import Konva from 'konva';
@@ -13,17 +13,15 @@ import gsap from 'gsap';
 
 import GradientColor from 'gradient-color';
 
-import RandomUtil from '@/utils/RandomUtil';
-import ArrayUtil from '@/utils/ArrayUtil';
-
-import TestData from '@/data/testdata';
-
 @Component({
     directives: {
         resize: VueResizeDirective,
     },
 })
 export default class VerticalTimeline extends Vue {
+    @Prop({ type: Array, required: true })
+    protected notes!: any[];
+
     protected config = {
         width: 0,
         height: 0,
@@ -55,20 +53,10 @@ export default class VerticalTimeline extends Vue {
 
     protected noteObjects = [] as Array<Konva.RectConfig>;
 
-    protected notes = [] as Note[];
-
     protected mounted(): void {
-        // for (const i of ArrayUtil.range(100)) {
-        //     this.notes.push({
-        //         time: i * RandomUtil.rand(2000, 3000),
-        //         duration: RandomUtil.rand(100, 200),
-        //         value: RandomUtil.rand(0, 127),
-        //     });
-        // }
-
         const minPerHeight = 5;
         const timeline = gsap.timeline();
-        for (const note of TestData.timelines) {
+        for (const note of this.notes) {
             // eslint-disable-next-line @typescript-eslint/no-this-alias
             const self = this;
             const object = {
