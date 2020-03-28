@@ -97,13 +97,9 @@ export default class VerticalTimeline extends Vue {
             } as Konva.RectConfig;
             this.noteObjects.push(object);
 
-            timeline.fromTo(
+            timeline.to(
                 object,
                 minPerHeight,
-                {
-                    percent: -1,
-                    ease: 'none',
-                },
                 {
                     percent: 100,
                     ease: 'none',
