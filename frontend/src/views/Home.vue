@@ -101,15 +101,15 @@ export default class Home extends Vue {
         });
 
         // テスト用
-        for (const i of ArrayUtil.range(6)) {
-            this.channels.push(TestData.timelines.filter(t => t.channel === i));
-        }
+        // for (const i of ArrayUtil.range(6)) {
+        //     this.channels.push(TestData.timelines.filter(t => t.channel === i));
+        // }
 
-        await aswait(1000);
-        const timelines = this.$refs.verticalTimelines as Vue[];
-        for (const timeline of timelines) {
-            timeline.$emit('playMidi');
-        }
+        // await aswait(1000);
+        // const timelines = this.$refs.verticalTimelines as Vue[];
+        // for (const timeline of timelines) {
+        //     timeline.$emit('playMidi');
+        // }
     }
 }
 </script>
