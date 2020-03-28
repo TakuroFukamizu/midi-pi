@@ -2,6 +2,7 @@
 k-stage.vertical-timeline(:config='config' v-resize='resized')
     k-layer
         k-rect(v-for='noteObject, i in noteObjects' :config='noteObject' :key='i')
+        k-line(:config='hitlineConfig')
 </template>
 
 <script lang="ts">
@@ -26,6 +27,17 @@ export default class VerticalTimeline extends Vue {
         width: 0,
         height: 0,
     };
+
+    protected get hitlineConfig(): Konva.LineConfig {
+        return {
+            x: 0,
+            y: this.config.height - 32,
+            width: this.config.width,
+            height: this.config.height,
+            points: [0, 0, this.config.width, 0],
+            stroke: 'black',
+        };
+    }
 
     protected colors = GradientColor(
         [

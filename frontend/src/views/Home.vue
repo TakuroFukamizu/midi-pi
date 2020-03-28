@@ -1,15 +1,18 @@
 <template lang="pug">
 #Home.full-height
-    q-img.absolute-center.full-height(:src='require("@/assets/imgs/pic/yellow.jpg")')
+    q-img.absolute-center.full-height(:src='require("@/assets/imgs/pic/yellow.jpg")' :img-style='{ filter: "brightness(80%)" }')
     .full-height
         .row.full-height
             .col.full-height(v-for='channel in channels')
                 vertical-timeline.full-height(:notes='channel')
+        .row.full-height.full-width.absolute-center
+            .col.full-height(v-for='channel, i in channels')
+                q-separator(v-if='i != 0' vertical color='black' opacity='' :key='i')
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { QImg, QResponsive } from 'quasar';
+import { QImg, QResponsive, QSeparator } from 'quasar';
 import '@/components/midiPlayer/VerticalTimeline.vue';
 
 import ArrayUtil from '@/utils/ArrayUtil';
@@ -20,6 +23,7 @@ import TestData from '@/data/testdata';
     components: {
         QImg,
         QResponsive,
+        QSeparator,
     },
 })
 export default class Home extends Vue {
