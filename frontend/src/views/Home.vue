@@ -38,7 +38,7 @@ export default class Home extends Vue {
 
     protected channels = [] as any[][];
 
-    protected socket?: io;
+    protected socket?: SocketIOClient.Socket;
 
     protected mounted(): void {
         this.socket = io('http://localhost:8080');
@@ -101,12 +101,12 @@ export default class Home extends Vue {
 @require '~@/assets/styles/entry/view.styl';
 
 html {
-  scroll-view: true;
-  // static-view: true;
+    scroll-view: true;
+    // static-view: true;
 }
 
 #Home .main-pane {
-  main-pane();
+    main-pane();
 }
 </style>
 
@@ -114,8 +114,8 @@ html {
 @require '~@/assets/styles/entry/variable.styl';
 
 #Home {
-  .main-pane {
-    max-height: 100vh;
-  }
+    .main-pane {
+        max-height: 100vh;
+    }
 }
 </style>
