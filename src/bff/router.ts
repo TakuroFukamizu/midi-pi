@@ -27,6 +27,37 @@ router.post('/timeline', async (req: express.Request, res: express.Response) => 
     }
 });
 
+/** 現在のMIDIファイルの演奏開始 */
+router.post('/play/start', async (req: express.Request, res: express.Response) => {
+    try {
+        eventHub.emit('playstart');
+        res.sendStatus(200);
+    } catch (ex) { 
+        res.sendStatus(500);
+    }
+});
+
+/** 現在のMIDIファイルの演奏一次停止 */
+router.post('/play/pause', async (req: express.Request, res: express.Response) => {
+    try {
+        eventHub.emit('playpause');
+        res.sendStatus(200);
+    } catch (ex) { 
+        res.sendStatus(500);
+    }
+});
+
+/** 現在のMIDIファイルの演奏キャンセル */
+router.post('/play/cancel', async (req: express.Request, res: express.Response) => {
+    try {
+        eventHub.emit('playcancel');
+        res.sendStatus(200);
+    } catch (ex) { 
+        res.sendStatus(500);
+    }
+});
+
+
 /** MIDI制御にてMIDI信号を送信したことを通知 */
 router.post('/execnotify', async (req: express.Request, res: express.Response) => {
     try {

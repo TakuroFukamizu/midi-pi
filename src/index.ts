@@ -28,6 +28,7 @@ async function main() {
         const timelineData = player.makeTimeline();
         await inter.sendTimeline(timelineData); // BFFにタイムラインを送信
 
+        await inter.playStart();
         await player.play();
     };
 

@@ -28,6 +28,11 @@ io.on("connection", (socket: socketio.Socket) => {
     eventHub.on('timeline', (data: any) => { 
         io.emit('timeline', data);
     });
+
+    eventHub.on('playstart', (data: any) => io.emit('playstart', data));
+    eventHub.on('playpause', (data: any) => io.emit('playpause', data));
+    eventHub.on('playcancel', (data: any) => io.emit('playcancel', data));
+
     eventHub.on('execnotify', (data: any) => { 
         io.emit('execnotify', data);
     });
