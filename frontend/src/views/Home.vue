@@ -64,6 +64,15 @@ export default class Home extends Vue {
                 this.channels.push(timelines.filter(t => t.channel === i));
             }
         });
+        this.socket.on('playstart', (msg: any) => {
+            // 現在のMIDIファイルの演奏開始
+        });
+        this.socket.on('playpause', (msg: any) => {
+            // 現在のMIDIファイルの演奏一次停止
+        });
+        this.socket.on('playstop', (msg: any) => {
+            // 現在のMIDIファイルの演奏キャンセル
+        });
         this.socket.on('execnotify', (msg: any) => {
             // 現在演奏したMIDI信号
             const type: string = msg.type;
