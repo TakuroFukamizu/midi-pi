@@ -1,7 +1,9 @@
 node_modules
 work
 .DS_Store
+dist
 .env
 yarn-error.log
 
 userConfig.json
+
