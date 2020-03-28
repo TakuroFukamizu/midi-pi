@@ -61,8 +61,10 @@ export default class Home extends Vue {
                 throw new Error('num of channnel is out of range');
             }
 
+            this.channels = [];
             for (const i of ArrayUtil.range(6)) {
                 this.channels.push(timelines.filter(t => t.channel === i));
+                console.log(timelines[timelines.length - 1].endTime);
             }
         });
         this.socket.on('playstart', (msg: any) => {
