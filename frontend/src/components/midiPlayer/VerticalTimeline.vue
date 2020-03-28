@@ -1,8 +1,9 @@
 <template lang="pug">
-k-stage.vertical-timeline(:config='config' v-resize='resized')
-    k-layer
-        k-rect(v-for='noteObject, i in noteObjects' :config='noteObject' :key='i')
-        k-line(:config='hitlineConfig')
+.vertical-timeline.full-height(:class='{ hit: hit }' v-resize='resized')
+    k-stage.full-width.full-height(:config='config')
+        k-layer
+            k-rect(v-for='noteObject, i in noteObjects' :config='noteObject' :key='i')
+            k-line(:config='hitlineConfig')
 </template>
 
 <script lang="ts">
@@ -22,6 +23,7 @@ import GradientColor from 'gradient-color';
 export default class VerticalTimeline extends Vue {
     @Prop({ type: Array, required: true })
     protected notes!: any[];
+    protected hit = false;
 
     protected config = {
         width: 0,
@@ -102,6 +104,11 @@ export default class VerticalTimeline extends Vue {
                         if (index !== -1) {
                             self.noteObjects.splice(index, 1);
                         }
+
+                        self.hit = true;
+                        setTimeout(() => {
+                            self.hit = false;
+                        }, note.durationTime - 50);
                     }
 
                     return (self.config.height - 32) * (this.percent / 100);
@@ -153,5 +160,8 @@ export interface Note {
 @require '~@/assets/styles/entry/variable.styl';
 
 .vertical-timeline {
+    &.hit {
+        background-color: rgba(255, 255, 255, 0.6);
+    }
 }
 </style>
