@@ -1,6 +1,7 @@
 import events from 'events';
 import MidiFileReader, { ControllerItemInterface, NoteItemInterface } from '../midi/fileReader';
 import MidiInterfaceDriver, { getDevices } from '../midi/interfaceDriver';
+import { UserConfigPlaylistItemInterface } from '../models/userconfig';
 
 export const EventExecNoteMidi = Symbol('EventExecNoteMidi');
 export const EventExecControllerMidi = Symbol('EventExecControllerMidi');
@@ -9,15 +10,17 @@ export const EventEndOfMidi = Symbol('EventEndOfMidi');
 export default class MidiSequenceController extends events.EventEmitter { 
     private device: MidiInterfaceDriver;
     private currentFile?: MidiFileReader;
+    private channnelStatus: boolean[] = [];
+    private numOfChannnels: number = 0;
 
     constructor() { 
         super();
         this.device = new MidiInterfaceDriver(); // dummy mode
     }
 
-    get title() { 
-        return this.currentFile!.title;
-    }
+    // get title() { 
+    //     return this.currentFile!.title;
+    // }
     
     setMidiInterface() { 
         const interfaceName = this.currentMidiDevice();
@@ -36,10 +39,11 @@ export default class MidiSequenceController extends events.EventEmitter {
         return physicalMidis[0];
     }
 
-    loadFile(filepath: string) { 
-        this.currentFile = new MidiFileReader(filepath);
+    loadFile(playItem: UserConfigPlaylistItemInterface) { 
+        // this.title = playItem.title;
+        this.currentFile = new MidiFileReader(playItem.filepath);
         this.currentFile.read();
-        console.info(`load midi file from: ${filepath}`);
+        console.info(`load midi file from: ${playItem.filepath}`);
         // file.printTracks();
         // file.printTracks(100);
     }
@@ -49,6 +53,7 @@ export default class MidiSequenceController extends events.EventEmitter {
 
         const { timelines, channels } = this.currentFile.fetchTimelineData();
         const numOfChannnels = channels.length;
+        this.numOfChannnels = numOfChannnels;
         const timelineData = {
             beatsPerMinute: this.currentFile.beatsPerMinute,
             numOfChannnels,
@@ -61,13 +66,20 @@ export default class MidiSequenceController extends events.EventEmitter {
     /** 指定された MIDIファイルをロードし、デバイスで演奏する */
     async play() { 
         if (!this.currentFile) throw new Error('illegal operation');
+        this.channnelStatus = [];
+        for (let i = 0; i < this.numOfChannnels; i++) { 
+            this.channnelStatus.push(false); // off
+        }
     
         for await (let data of this.currentFile.datas()) { 
             switch (data.type) { 
                 case 'noteOn':
-                case 'noteOff':
-                    this.execNoteMidi(data as NoteItemInterface);
+                case 'noteOff': { 
+                    const item = (data as NoteItemInterface);
+                    this.channnelStatus[item.channel] = item.type == 'noteOn' ? true : false;
+                    this.execNoteMidi(item);
                     break;
+                }
                 case 'controller':
                     this.execControllerMidi(data as ControllerItemInterface);
                     break;
@@ -96,5 +108,15 @@ export default class MidiSequenceController extends events.EventEmitter {
             channel: data.channel
         });
         this.emit(EventExecControllerMidi, data);
+    }
+
+    stop() { 
+        this.allStopMidiCommand();
+    }
+
+    /** MIDIで全停止信号を送る */
+    allStopMidiCommand() { 
+        this.device.output('controller', { controllerType: 120, value: 0, channel: 0 });
+        this.device.output('controller', { controllerType: 123, value: 0, channel: 0 });
     }
 }
