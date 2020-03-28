@@ -104,7 +104,7 @@ export default class VerticalTimeline extends Vue {
                     percent: 100,
                     ease: 'none',
                 },
-                note.startTime / 1000 - minPerHeight,
+                note.endTime / 1000,
             );
         }
 
