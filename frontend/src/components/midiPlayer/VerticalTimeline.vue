@@ -24,6 +24,7 @@ export default class VerticalTimeline extends Vue {
     @Prop({ type: Array, required: true })
     protected notes!: any[];
     protected hit = false;
+    protected timeline = null as gsap.core.Timeline | null;
 
     protected config = {
         width: 0,
@@ -68,8 +69,29 @@ export default class VerticalTimeline extends Vue {
     protected noteObjects = [] as Array<Konva.RectConfig>;
 
     protected mounted(): void {
+        this.initNotes();
+
+        this.$on('playMidi', () => {
+            if (!this.timeline) {
+                return;
+            }
+
+            this.timeline.seek(-3);
+            this.timeline.play();
+        });
+
+        this.$on('stopMidi', () => {
+            if (!this.timeline) {
+                return;
+            }
+
+            this.timeline.pause();
+        });
+    }
+
+    protected initNotes(): void {
         const minPerHeight = 5;
-        const timeline = gsap.timeline();
+        this.timeline = gsap.timeline();
         for (const note of this.notes) {
             // eslint-disable-next-line @typescript-eslint/no-this-alias
             const self = this;
@@ -117,7 +139,7 @@ export default class VerticalTimeline extends Vue {
             } as Konva.RectConfig;
             this.noteObjects.push(object);
 
-            timeline.to(
+            this.timeline.to(
                 object,
                 minPerHeight,
                 {
@@ -127,9 +149,6 @@ export default class VerticalTimeline extends Vue {
                 note.startTime / 1000,
             );
         }
-
-        timeline.seek(-2);
-        timeline.play();
     }
 
     protected resized(): void {

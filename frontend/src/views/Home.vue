@@ -3,8 +3,8 @@
     q-img.absolute-center.full-height(:src='require("@/assets/imgs/pic/yellow.jpg")' :img-style='{ filter: "brightness(80%)" }')
     .full-height
         .row.full-height
-            .col.full-height(v-for='channel in channels')
-                vertical-timeline.full-height(:notes='channel')
+            .col.full-height(v-for='channel, i in channels')
+                vertical-timeline.full-height(:notes='channel' ref='verticalTimelines' key='i')
         .row.full-height.full-width.absolute-center
             .col.full-height(v-for='channel, i in channels')
                 q-separator(v-if='i != 0' vertical color='black' opacity='' :key='i')
@@ -25,6 +25,7 @@ import {
     NoteItemInterface,
     ControllerItemInterface,
 } from '@/types/socketMessage/midiItem';
+import { aswait } from '../utils/AsyncTimeout';
 
 @Component({
     components: {
@@ -40,7 +41,7 @@ export default class Home extends Vue {
 
     protected socket?: SocketIOClient.Socket;
 
-    protected mounted(): void {
+    protected async mounted(): Promise<void> {
         this.socket = io('http://localhost:8080');
         this.socket.on('setnewtitle', (msg: any) => {
             // 新しいMIDIファイルの設定
@@ -66,12 +67,21 @@ export default class Home extends Vue {
         });
         this.socket.on('playstart', (msg: any) => {
             // 現在のMIDIファイルの演奏開始
+            const timelines = this.$refs.verticalTimelines as Vue[];
+            for (const timeline of timelines) {
+                timeline.$emit('playMidi');
+            }
         });
         this.socket.on('playpause', (msg: any) => {
             // 現在のMIDIファイルの演奏一次停止
+            // TODO: 次回フェーズに回す
         });
         this.socket.on('playcancel', (msg: any) => {
             // 現在のMIDIファイルの演奏キャンセル
+            const timelines = this.$refs.verticalTimelines as Vue[];
+            for (const timeline of timelines) {
+                timeline.$emit('stopMidi');
+            }
         });
         this.socket.on('execnotify', (msg: any) => {
             // 現在演奏したMIDI信号
@@ -91,9 +101,15 @@ export default class Home extends Vue {
         });
 
         // テスト用
-        // for (const i of ArrayUtil.range(6)) {
-        //     this.channels.push(TestData.timelines.filter(t => t.channel === i));
-        // }
+        for (const i of ArrayUtil.range(6)) {
+            this.channels.push(TestData.timelines.filter(t => t.channel === i));
+        }
+
+        await aswait(1000);
+        const timelines = this.$refs.verticalTimelines as Vue[];
+        for (const timeline of timelines) {
+            timeline.$emit('playMidi');
+        }
     }
 }
 </script>
