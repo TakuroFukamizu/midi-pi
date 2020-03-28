@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
+    "build:client": "cd frontend && yarn build --dest ../dist",
     "start:main": "ts-node --files src/index.ts",
     "start:bff": "ts-node --files src/bff/index.ts",
     "start": "run-p start:*",
