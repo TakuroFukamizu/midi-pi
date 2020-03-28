@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node --files src/index.ts"
+    "start": "ts-node --files src/index.ts",
+    "build:client": "cd frontend && yarn build --dest ../dist"
   },
   "license": "MIT",
   "dependencies": {
