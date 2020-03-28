@@ -3,6 +3,9 @@ import eventHub from './eventhub';
 
 const router: express.Router = express.Router();
 
+/** ヘルスチェックの応答用 */
+router.post('/echo', async (req: express.Request, res: express.Response) => res.sendStatus(200) );
+
 /** 新しい曲を読み込み */
 router.post('/setnewtitle', async (req: express.Request, res: express.Response) => {
     try {

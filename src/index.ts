@@ -2,15 +2,13 @@ import dotenv from 'dotenv';
 import MidiSequenceController, { EventExecNoteMidi, EventExecControllerMidi, EventEndOfMidi } from './controller/midiSequence';
 import ComInterProcess from './com/inter';
 import ManualController from './controller/manual';
+import loadConfig from './utils/loadConfig';
 
 dotenv.config();
 const BFF_PORT = parseInt(process.env.BFF_PORT || '80');
 const DEMO_MODE = true;
 
-// const input = 'work/imperial.mid';
-const input = 'work/simple.mid';
-const input2 = 'work/simple_2multi.mid';
-const input3 = 'work/simple_2multi_SMF1.mid';
+const userConfig = loadConfig();
 
 const inter = new ComInterProcess(BFF_PORT)
 const player = new MidiSequenceController();
@@ -18,6 +16,10 @@ const manual = new ManualController();
 manual.apply();
 
 async function main() { 
+    // BFFの起動待ち
+    if (!await inter.waitLaunch(10)) { 
+        throw new Error('Backend for Frontend server has internal serever error');
+    }
 
     const play = async (filepath: string) => {
         player.loadFile(filepath);
@@ -44,9 +46,9 @@ async function main() {
         // await inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
     });
 
-    await play(input);
-    await play(input2);
-    await play(input3);
+    // TODO: キーボード対応
+    await play(userConfig.playlist[0].filepath);
+    await play(userConfig.playlist[1].filepath);
 }
 try {
     main();
