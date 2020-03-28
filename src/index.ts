@@ -7,7 +7,7 @@ import { UserConfigPlaylistItemInterface } from './models/userconfig'
 
 dotenv.config();
 const BFF_PORT = parseInt(process.env.BFF_PORT || '80');
-const DEMO_MODE = true;
+const DEMO_MODE = process.env.DEMO_MODE ? true : false;
 
 const userConfig = loadConfig();
 
