@@ -15,6 +15,7 @@
     "easymidi": "^1.0.3",
     "express": "^4.17.1",
     "midi-file": "^1.1.2",
+    "node-hid-stream": "^1.1.0",
     "request": "^2.88.2",
     "socket.io": "^2.3.0",
     "ts-node": "^8.8.1",

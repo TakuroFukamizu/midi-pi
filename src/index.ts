@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import MidiSequenceController, { EventExecNoteMidi, EventExecControllerMidi, EventEndOfMidi } from './controller/midiSequence';
 import ComInterProcess from './com/inter';
-import ManualController from './controller/manual';
+import ManualController, { EventOnHotkeyPressed} from './controller/manual';
 import loadConfig from './utils/loadConfig';
 import { UserConfigPlaylistItemInterface } from './models/userconfig'
 
@@ -13,12 +13,12 @@ const userConfig = loadConfig();
 
 const inter = new ComInterProcess(BFF_PORT)
 const player = new MidiSequenceController();
-const manual = new ManualController();
+const manual = new ManualController(userConfig.keyboardVendorId, userConfig.keyboardProductId);
 manual.applyPlaylist(userConfig.playlist);
 
-async function main() { 
+async function main() {
     // BFFの起動待ち
-    if (!await inter.waitLaunch(10)) { 
+    if (!await inter.waitLaunch(10)) {
         throw new Error('Backend for Frontend server has internal serever error');
     }
 
@@ -47,11 +47,13 @@ async function main() {
         // await inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
     });
 
+    // キーボードで実行
+    manual.on(EventOnHotkeyPressed, async (data: UserConfigPlaylistItemInterface) => {
+        await play(data);
+    });
+    console.info('finish setup process');
+};
 
-    // TODO: キーボード対応
-    await play(userConfig.playlist[0]);
-    await play(userConfig.playlist[1]);
-}
 try {
     main();
 } catch (ex) { 
