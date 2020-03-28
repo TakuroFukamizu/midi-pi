@@ -14,7 +14,7 @@ const userConfig = loadConfig();
 const inter = new ComInterProcess(BFF_PORT)
 const player = new MidiSequenceController();
 const manual = new ManualController();
-manual.apply();
+manual.applyPlaylist(userConfig.playlist);
 
 async function main() { 
     // BFFの起動待ち
@@ -46,6 +46,7 @@ async function main() {
         console.log('end of midi file');
         // await inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
     });
+
 
     // TODO: キーボード対応
     await play(userConfig.playlist[0]);
