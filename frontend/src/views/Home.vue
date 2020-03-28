@@ -70,7 +70,7 @@ export default class Home extends Vue {
         this.socket.on('playpause', (msg: any) => {
             // 現在のMIDIファイルの演奏一次停止
         });
-        this.socket.on('playstop', (msg: any) => {
+        this.socket.on('playcancel', (msg: any) => {
             // 現在のMIDIファイルの演奏キャンセル
         });
         this.socket.on('execnotify', (msg: any) => {
