@@ -85,12 +85,12 @@ export default class VerticalTimeline extends Vue {
                         return -9999;
                     }
 
-                    // if (100 <= this.percent) {
-                    //     const index = self.noteObjects.indexOf(this);
-                    //     if (index !== -1) {
-                    //         self.noteObjects.splice(index, 1);
-                    //     }
-                    // }
+                    if (100 <= this.percent) {
+                        const index = self.noteObjects.indexOf(this);
+                        if (index !== -1) {
+                            self.noteObjects.splice(index, 1);
+                        }
+                    }
 
                     return (self.config.height - 32) * (this.percent / 100);
                 },
