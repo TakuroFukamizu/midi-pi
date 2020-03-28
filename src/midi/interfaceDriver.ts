@@ -3,15 +3,25 @@ const easymidi = require('easymidi');
 
 export function getDevices() { 
     const outputs = easymidi.getOutputs();
-    return outputs;
+    return outputs as string;
 }
 
 export default class MidiInterfaceDriver { 
     private interface: any;
-    constructor(name: string) { 
+    private isDummyMode: boolean = false;
+
+    constructor(name?: string) { 
+        if (!name) { 
+            this.isDummyMode = true;
+            return;
+        }
         this.interface = new easymidi.Output(name);
     }
     output(kind: string, payload: any) { 
+        if (this.isDummyMode) { 
+            console.info(`[DUMMY MODE] skip ${kind}`, payload);
+            return;
+        }
         this.interface.send(kind.toLowerCase(), payload);
         // output.send('noteon', {
         //   note: 64,
