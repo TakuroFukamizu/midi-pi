@@ -3,6 +3,7 @@ import MidiSequenceController, { EventExecNoteMidi, EventExecControllerMidi, Eve
 import ComInterProcess from './com/inter';
 import ManualController from './controller/manual';
 import loadConfig from './utils/loadConfig';
+import { UserConfigPlaylistItemInterface } from './models/userconfig'
 
 dotenv.config();
 const BFF_PORT = parseInt(process.env.BFF_PORT || '80');
@@ -21,10 +22,10 @@ async function main() {
         throw new Error('Backend for Frontend server has internal serever error');
     }
 
-    const play = async (filepath: string) => {
-        player.loadFile(filepath);
+    const play = async (playitem: UserConfigPlaylistItemInterface) => {
+        player.loadFile(playitem);
 
-        await inter.setNewTilte({ title: player.title }); //新しい曲をセット
+        await inter.setNewTilte({ title: playitem.title }); //新しい曲をセット
 
         // 先にタイムラインデータを作ってフロントエンドに送る
         const timelineData = player.makeTimeline();
@@ -47,8 +48,8 @@ async function main() {
     });
 
     // TODO: キーボード対応
-    await play(userConfig.playlist[0].filepath);
-    await play(userConfig.playlist[1].filepath);
+    await play(userConfig.playlist[0]);
+    await play(userConfig.playlist[1]);
 }
 try {
     main();

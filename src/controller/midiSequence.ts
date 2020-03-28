@@ -1,6 +1,7 @@
 import events from 'events';
 import MidiFileReader, { ControllerItemInterface, NoteItemInterface } from '../midi/fileReader';
 import MidiInterfaceDriver, { getDevices } from '../midi/interfaceDriver';
+import { UserConfigPlaylistItemInterface } from '../models/userconfig';
 
 export const EventExecNoteMidi = Symbol('EventExecNoteMidi');
 export const EventExecControllerMidi = Symbol('EventExecControllerMidi');
@@ -15,9 +16,9 @@ export default class MidiSequenceController extends events.EventEmitter {
         this.device = new MidiInterfaceDriver(); // dummy mode
     }
 
-    get title() { 
-        return this.currentFile!.title;
-    }
+    // get title() { 
+    //     return this.currentFile!.title;
+    // }
     
     setMidiInterface() { 
         const interfaceName = this.currentMidiDevice();
@@ -36,10 +37,11 @@ export default class MidiSequenceController extends events.EventEmitter {
         return physicalMidis[0];
     }
 
-    loadFile(filepath: string) { 
-        this.currentFile = new MidiFileReader(filepath);
+    loadFile(playItem: UserConfigPlaylistItemInterface) { 
+        // this.title = playItem.title;
+        this.currentFile = new MidiFileReader(playItem.filepath);
         this.currentFile.read();
-        console.info(`load midi file from: ${filepath}`);
+        console.info(`load midi file from: ${playItem.filepath}`);
         // file.printTracks();
         // file.printTracks(100);
     }
