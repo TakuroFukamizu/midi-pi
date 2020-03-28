@@ -60,7 +60,7 @@ export default class Home extends Vue {
                 throw new Error('num of channnel is out of range');
             }
 
-            for (const i of ArrayUtil.range(numOfChannnels)) {
+            for (const i of ArrayUtil.range(6)) {
                 this.channels.push(timelines.filter(t => t.channel === i));
             }
         });
@@ -90,9 +90,10 @@ export default class Home extends Vue {
             }
         });
 
-        for (const i of ArrayUtil.range(6)) {
-            this.channels.push(TestData.timelines.filter(t => t.channel === i));
-        }
+        // テスト用
+        // for (const i of ArrayUtil.range(6)) {
+        //     this.channels.push(TestData.timelines.filter(t => t.channel === i));
+        // }
     }
 }
 </script>
