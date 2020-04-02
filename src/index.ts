@@ -5,16 +5,28 @@ import ManualController, { EventOnHotkeyPressed} from './controller/manual';
 import loadConfig from './utils/loadConfig';
 import { UserConfigPlaylistItemInterface } from './models/userconfig'
 
-dotenv.config();
-const BFF_PORT = parseInt(process.env.BFF_PORT || '80');
-const DEMO_MODE = process.env.DEMO_MODE ? true : false;
+let BFF_PORT: number;
+let DEMO_MODE: boolean;
 
-const userConfig = loadConfig();
+let inter: ComInterProcess;
+let player: MidiSequenceController;
+let manual: ManualController;
 
-const inter = new ComInterProcess(BFF_PORT)
-const player = new MidiSequenceController();
-const manual = new ManualController(userConfig.keyboardVendorId, userConfig.keyboardProductId);
-manual.applyPlaylist(userConfig.playlist);
+function setup() { 
+    // load dotenv
+    dotenv.config();
+    BFF_PORT = parseInt(process.env.BFF_PORT || '80');
+    DEMO_MODE = process.env.DEMO_MODE ? true : false;
+
+    // load userConfig.json
+    const userConfig = loadConfig();
+
+    // setup instances
+    inter = new ComInterProcess(BFF_PORT);
+    player = new MidiSequenceController();
+    manual = new ManualController(userConfig.keyboardVendorId, userConfig.keyboardProductId);
+    manual.applyPlaylist(userConfig.playlist);
+}
 
 async function main() {
     // BFFの起動待ち
@@ -55,7 +67,10 @@ async function main() {
 };
 
 try {
+    setup();
     main();
+    process.exit(0);
 } catch (ex) { 
     console.error(ex);
+    process.exit(1);
 }
