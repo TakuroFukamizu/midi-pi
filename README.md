@@ -44,8 +44,13 @@ yarn install
 
 ### dotenv
 
-### userConfig.json
+```sh
+BFF_PORT=8080
 ```
+
+### userConfig.json
+
+```json
 {
     "playlist" : [
         { "id" : 0, "hotkey" : "1", "filepath" : "./work/simple1.mid", "title" : "1 banme!" },
