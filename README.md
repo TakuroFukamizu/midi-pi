@@ -23,11 +23,22 @@ Easy-to-use midi master device build with Raspberry pi
 - pm2
 - chrome
 
-#### install libraries
+## Setup
+
+### Install libraries
 
 ```sh
 sudo apt install libasound2-dev libudev-dev libusb-1.0-0-dev
 ```
+
+### Install node libraries
+
+```sh
+yarn install
+cd frontend
+yarn install
+```
+
 
 ## config
 
@@ -45,6 +56,13 @@ sudo apt install libasound2-dev libudev-dev libusb-1.0-0-dev
     "keyboardVendorId" : 0x05ac,
     "keyboardProductId" : 0x0256
 }
+```
+
+## Run 
+
+```
+yarn build
+yarn start
 ```
 
 ## Todo
