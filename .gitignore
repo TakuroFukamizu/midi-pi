@@ -3,7 +3,8 @@ work
 .DS_Store
 dist
 .env
-yarn-error.log
+*.log
+.vscode
 
 userConfig.json
 
