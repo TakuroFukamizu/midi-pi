@@ -22,20 +22,26 @@ app.use(express.static(PUBLIC_PATH));
 app.use('/api', router);
 
 io.on("connection", (socket: socketio.Socket) => {
-    eventHub.on('setnewtitle', (data: any) => { 
-        io.emit('setnewtitle', data);
-    });
-    eventHub.on('timeline', (data: any) => { 
-        io.emit('timeline', data);
-    });
+    // eventHub.on('setnewtitle', (data: any) => { 
+    //     io.emit('setnewtitle', data);
+    // });
+    // eventHub.on('timeline', (data: any) => { 
+    //     io.emit('timeline', data);
+    // });
 
-    eventHub.on('playstart', (data: any) => io.emit('playstart', data));
-    eventHub.on('playpause', (data: any) => io.emit('playpause', data));
-    eventHub.on('playcancel', (data: any) => io.emit('playcancel', data));
+    // eventHub.on('play.start', (data: any) => io.emit('playstart', data));
+    // eventHub.on('play.pause', (data: any) => io.emit('playpause', data));
+    // eventHub.on('play.cancel', (data: any) => io.emit('playcancel', data));
 
-    eventHub.on('execnotify', (data: any) => { 
-        io.emit('execnotify', data);
-    });
+    // eventHub.on('execnotify', (data: any) => { 
+    //     io.emit('execnotify', data);
+    // });
+    io.on('setnewtitle', (data: any) => io.emit('setnewtitle', data));
+    io.on('timeline', (data: any) => io.emit('timeline', data));
+    io.on('play.start', (data: any) => io.emit('playstart', data));
+    io.on('play.pause', (data: any) => io.emit('playpause', data));
+    io.on('play.cancel', (data: any) => io.emit('playcancel', data));
+    io.on('execnotify', (data: any) => io.emit('execnotify', data));
 });
 
 server.listen(PORT, () => {

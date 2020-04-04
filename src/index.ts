@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import MidiSequenceController, { EventExecNoteMidi, EventExecControllerMidi, EventEndOfMidi } from './controller/midiSequence';
-import ComInterProcess from './com/inter';
+import ComInterProcess from './com/interSocket';
 import ManualController, { EventOnHotkeyPressed} from './controller/manual';
 import loadConfig from './utils/loadConfig';
 import { UserConfigPlaylistItemInterface } from './models/userconfig'
@@ -37,26 +37,26 @@ async function main() {
     const play = async (playitem: UserConfigPlaylistItemInterface) => {
         player.loadFile(playitem);
 
-        await inter.setNewTilte({ title: playitem.title }); //新しい曲をセット
+        inter.setNewTilte({ title: playitem.title }); //新しい曲をセット
 
         // 先にタイムラインデータを作ってフロントエンドに送る
         const timelineData = player.makeTimeline();
-        await inter.sendTimeline(timelineData); // BFFにタイムラインを送信
+        inter.sendTimeline(timelineData); // BFFにタイムラインを送信
 
-        await inter.playStart();
+        inter.playStart();
         await player.play();
     };
 
     if (!DEMO_MODE) player.setMidiInterface();
     player.on(EventExecNoteMidi, async (data) => {
-        await inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
+        inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
     });
     player.on(EventExecControllerMidi, async (data) => {
-        await inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
+        inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
     });
     player.on(EventEndOfMidi, async (data) => {
         console.log('end of midi file');
-        // await inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
+        // inter.sendExecNotify(data); // BFFに実行したmidiの情報を送信
     });
 
     // キーボードで実行
