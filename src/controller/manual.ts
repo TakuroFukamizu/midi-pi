@@ -1,9 +1,7 @@
 // node-hid-stream is can't run at macbook
 import events from 'events';
-const nodeHidStream = require('node-hid-stream');
+const { KeyboardCharacters } = require('node-hid-stream');
 import { UserConfigPlaylistItemInterface } from '../models/userconfig';
-
-
 
 export const EventOnHotkeyPressed = Symbol('EventOnHotkeyPressed');
 
@@ -13,18 +11,20 @@ export default class ManualController extends events.EventEmitter {
 
     constructor(vendorId: number, productId: number) { 
         super();
+        console.info(`use HID: vendorId: ${vendorId}, productId: ${productId}`);
 
-        const KeyboardCharacters = nodeHidStream.KeyboardCharacters;
         this.characters = new KeyboardCharacters({ vendorId, productId });
+        // console.log(JSON.stringify(this.characters, null, 4));
         
-        this.characters.on("data", (data: string) => {
+        this.characters.on('data', (data: string) => {
+            console.log(data, typeof(data), data.length);
             if (data.length == 0) return;
+            console.log(data, typeof(data), data.length);
             for (const item of this.list) { 
                 if (item.hotkey.toLowerCase() == data.toLowerCase()) {
                     this.emit(EventOnHotkeyPressed, item);
                 }
             }
-            console.log(data, typeof(data), data.length);
         });
     }
 

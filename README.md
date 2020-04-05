@@ -28,7 +28,7 @@ Easy-to-use midi master device build with Raspberry pi
 ### Install libraries
 
 ```sh
-sudo apt install libasound2-dev libudev-dev libusb-1.0-0-dev
+sudo apt install libasound2-dev libudev-dev libusb-1.0-0-dev -y
 ```
 
 ### Install node libraries

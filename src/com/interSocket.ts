@@ -12,8 +12,24 @@ export default class ComInterProcess {
         this.host = host;
     }
 
-    async waitLaunch(tryLimit: number = 3) { 
-        this.socket = io(`${this.host}:${this.port}`);
+    init() {
+        console.info(`connect to bff.socket ${this.host}, ${this.port}`);
+        const options: SocketIOClient.ConnectOpts = {
+            host: this.host,
+            port: this.port.toString(),
+            reconnection: true,
+            timeout: 5000,
+            autoConnect: false
+        };
+        // this.socket = io(`${this.host}:${this.port}`);
+        this.socket = io(options);
+        this.socket.on('reconnecting', (attemptNumber: any) => {
+            console.log('socket:reconnecting...', attemptNumber);
+        });
+    }
+
+    waitLaunch(tryLimit: number = 3) { 
+        this.init();
         if (!this.socket) throw new Error('io error');
         return new Promise((resolve, reject) => {
             if (!this.socket) {
@@ -21,13 +37,26 @@ export default class ComInterProcess {
                 return;
             }
             this.socket.on('connect', () => {
+                console.info('connected');
                 resolve(true);
             });
+            this.socket.on('connect_error', (error: any) => {
+                console.error('connect_error');
+                reject(error);
+            });
+            this.socket.on('connect_timeout', (error: any) => {
+                console.error('connect_timeout');
+                reject(error);
+            });
+            this.socket.open();
+            console.log('socket.client open');
+            resolve(true);
         });
     }
 
     private emit(eventName: string, data?: any) { 
-        if (!this.socket) throw new Error('invalid operation');
+        // if (!this.socket) throw new Error('invalid operation');
+        if (!this.socket) return;
         this.socket.emit(eventName, data);
     }
 
